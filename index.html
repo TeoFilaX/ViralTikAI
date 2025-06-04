@@ -1,606 +1,1123 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ViralBoostAI - IA para Viralizar Videos de TikTok</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #1a0638 0%, #0f172a 100%);
-            min-height: 100vh;
-            color: #f8fafc;
-        }
-        
-        .gradient-text {
-            background: linear-gradient(90deg, #ec4899 0%, #3b82f6 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .upload-box {
-            border: 2px dashed #7e22ce;
-            transition: all 0.3s ease;
-        }
-        
-        .upload-box:hover {
-            border-color: #ec4899;
-            background-color: rgba(124, 58, 237, 0.1);
-        }
-        
-        .chat-message-ai {
-            background: linear-gradient(135deg, #7e22ce 0%, #3b82f6 100%);
-            border-radius: 18px 18px 18px 4px;
-        }
-        
-        .chat-message-user {
-            background: #1e293b;
-            border-radius: 18px 18px 4px 18px;
-        }
-        
-        .pulse-animation {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(236, 72, 153, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
-        }
-        
-        .result-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ViralBoostAI - Optimiza tus Videos</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    
+    :root {
+      --primary-gradient: linear-gradient(135deg, #7e22ce 0%, #3b82f6 100%);
+      --pink-glow: 0 0 15px rgba(236, 72, 153, 0.5);
+      --purple-text-gradient: linear-gradient(90deg, #ec4899 0%, #3b82f6 100%);
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top right, #1a0638 0%, #0f172a 100%);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    /* Gradientes y animaciones */
+    .gradient-text {
+      background: var(--purple-text-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .upload-box {
+      border: 2px dashed #7e22ce;
+      transition: all 0.3s ease;
+    }
+    
+    .upload-box:hover {
+      border-color: #ec4899;
+      background-color: rgba(124, 58, 237, 0.1);
+      box-shadow: var(--pink-glow);
+    }
+    
+    .chat-message-ai {
+      background: var(--primary-gradient);
+      border-radius: 18px 18px 18px 4px;
+      box-shadow: 0 4px 15px rgba(126, 34, 206, 0.3);
+    }
+    
+    .chat-message-user {
+      background: #1e293b;
+      border-radius: 18px 18px 4px 18px;
+    }
+    
+    .pulse-animation {
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(236, 72, 153, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
+    }
+    
+    .result-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Efecto de partículas para fondo */
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(236, 72, 153, 0.3);
+      box-shadow: 0 0 10px rgba(236, 72, 153, 0.5);
+      z-index: -1;
+      pointer-events: none;
+    }
+    
+    .hero-glow {
+      filter: blur(80px);
+      opacity: 0.6;
+      z-index: -1;
+    }
+    
+    /* Efecto 3D para la tarjeta de análisis */
+    .card-3d {
+      transform: perspective(1000px) rotateY(0deg) rotateX(0deg);
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .chart-container {
+      perspective: 1000px;
+    }
+    
+    .chart-card {
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+    }
+    
+    .hashtag-bubble {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0px); }
+    }
+    
+    .typewriter {
+      overflow: hidden;
+      border-right: 0.15em solid #fff;
+      white-space: nowrap;
+      animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+    }
+    
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    
+    @keyframes blink-caret {
+      from, to { border-color: transparent; }
+      50% { border-color: #fff; }
+    }
+    
+    /* Responsive fixes */
+    @media (max-width: 768px) {
+      .hero-glow {
+        filter: blur(50px);
+      }
+      
+      .card-3d {
+        transform: none;
+      }
+      
+      .typewriter {
+        animation: none;
+        border-right: none;
+        white-space: normal;
+      }
+    }
+  </style>
 </head>
-<body class="antialiased">
-    <!-- Navbar -->
-    <nav class="border-b border-gray-800 py-4 px-6 lg:px-12">
-        <div class="flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 flex items-center justify-center">
-                    <i class="fas fa-bolt text-white"></i>
-                </div>
-                <span class="text-xl font-bold gradient-text">ViralBoostAI</span>
-            </div>
-            <div id="auth-section">
-                <button id="login-btn" class="bg-pink-600 hover:bg-pink-700 text-white px-6 py-2 rounded-full flex items-center space-x-2 transition-all">
-                    <i class="fab fa-tiktok"></i>
-                    <span>Iniciar sesión con TikTok</span>
-                </button>
-                <div id="user-profile" class="hidden items-center space-x-4">
-                    <img id="user-avatar" src="" class="w-10 h-10 rounded-full border-2 border-pink-500">
-                    <span id="username" class="font-medium"></span>
-                    <button id="logout-btn" class="text-gray-400 hover:text-white">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </button>
-                </div>
-            </div>
+<body class="min-h-screen overflow-x-hidden">
+  <!-- Efecto de partículas -->
+  <div id="particles"></div>
+  
+  <!-- Navegación -->
+  <nav class="fixed w-full z-50 py-4 px-6 backdrop-blur-lg bg-opacity-30 bg-[#0f172a] border-b border-purple-900">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center">
+        <div class="h-10 w-10 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center mr-3">
+          <i class="fas fa-bolt text-white"></i>
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="py-16 px-6 lg:px-12 lg:py-24">
-        <div class="container mx-auto flex flex-col lg:flex-row items-center">
-            <div class="lg:w-1/2 mb-12 lg:mb-0">
-                <h1 class="text-4xl lg:text-6xl font-bold mb-6">
-                    <span class="gradient-text">AI para Viralizar</span><br>
-                    <span class="text-white">Tus Videos</span>
-                </h1>
-                <p class="text-lg text-gray-300 mb-8 max-w-lg">
-                    Mejora el alcance de tus publicaciones al analizar contenido con inteligencia artificial avanzada.
-                    Descubre el mejor momento para publicar, hashtags efectivos y tendencias para maximizar tus vistas.
-                </p>
-                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                    <button id="hero-login-btn" class="bg-pink-600 hover:bg-pink-700 text-white px-8 py-4 rounded-full flex items-center space-x-2 transition-all pulse-animation">
-                        <i class="fab fa-tiktok text-xl"></i>
-                        <span class="font-medium">Iniciar sesión con TikTok</span>
-                    </button>
-                    <button class="border border-pink-600 text-pink-400 hover:bg-pink-900/30 px-8 py-4 rounded-full flex items-center space-x-2 transition-all">
-                        <i class="fas fa-play-circle"></i>
-                        <span class="font-medium">Ver demostración</span>
-                    </button>
-                </div>
+        <span class="text-2xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">ViralBoost<span class="text-cyan-400">AI</span></span>
+      </div>
+      
+      <div class="hidden md:flex space-x-6">
+        <a href="#" class="hover:text-cyan-300 transition-colors">Inicio</a>
+        <a href="#features" class="hover:text-cyan-300 transition-colors">Características</a>
+        <a href="#how-it-works" class="hover:text-cyan-300 transition-colors">Cómo funciona</a>
+        <a href="#testimonials" class="hover:text-cyan-300 transition-colors">Testimonios</a>
+      </div>
+      
+      <div class="flex items-center">
+        <a href="#" class="text-sm px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 transition-all shadow-lg">Prueba Gratis</a>
+        <button class="ml-4 md:hidden text-white">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Hero Section -->
+  <section class="pt-32 pb-20 px-4 relative overflow-hidden">
+    <div class="absolute top-1/4 -right-32 w-96 h-96 bg-purple-600 rounded-full opacity-30 hero-glow"></div>
+    <div class="absolute bottom-1/4 -left-32 w-96 h-96 bg-pink-500 rounded-full opacity-30 hero-glow"></div>
+    
+    <div class="max-w-7xl mx-auto relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="text-center lg:text-left">
+          <div class="text-xs font-bold bg-gradient-to-r from-purple-500 to-pink-500 text-transparent bg-clip-text inline-block px-3 py-1 rounded-full border border-purple-500/30 mb-4">
+            🚀 PLATAFORMA AI #1 PARA CREADORES
+          </div>
+          <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-6">
+            Potencia tus vídeos con <br>
+            <span class="gradient-text">Inteligencia Artificial</span>
+          </h1>
+          <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto lg:mx-0">
+            Maximiza el alcance de tus vídeos con nuestro análisis avanzado de contenido. Viraliza tus publicaciones con las mejores estrategias para cada plataforma.
+          </p>
+          
+          <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <a href="#upload" class="px-8 py-4 rounded-xl bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 transition-all shadow-lg shadow-purple-500/20 font-bold">
+              Analizar Vídeo Gratis
+            </a>
+            <a href="#" class="px-8 py-4 rounded-xl bg-white/10 backdrop-blur-lg border border-white/10 hover:bg-white/20 transition-all font-bold flex items-center justify-center gap-2">
+              <i class="fas fa-play-circle"></i> Ver Demostración
+            </a>
+          </div>
+          
+          <div class="mt-8 flex justify-center lg:justify-start gap-6">
+            <div>
+              <div class="text-3xl font-bold gradient-text">95%</div>
+              <div class="text-sm text-gray-400">Aumento de engagement</div>
             </div>
-            <div class="lg:w-1/2 relative">
-                <div class="relative">
-                    <div class="absolute -top-8 -left-8 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-30"></div>
-                    <div class="absolute -bottom-8 -right-8 w-64 h-64 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-30"></div>
-                    <div class="relative bg-gray-800/50 rounded-2xl overflow-hidden border border-gray-700">
-                        <div class="p-4 bg-gradient-to-r from-purple-900/50 to-blue-900/50">
-                            <div class="flex space-x-2">
-                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                            </div>
-                        </div>
-                        <div class="p-4">
-                            <div class="aspect-w-16 aspect-h-9 bg-gray-900 rounded-lg overflow-hidden">
-                                <video autoplay loop muted class="w-full h-full object-cover">
-                                    <source src="https://assets.mixkit.co/videos/preview/mixkit-woman-dancing-under-neon-lights-1230-large.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="mt-4 flex justify-between items-center">
-                                <div>
-                                    <p class="font-bold">@usuarioviral</p>
-                                    <p class="text-sm text-gray-400">2.4M vistas · 320k likes</p>
-                                </div>
-                                <div class="flex space-x-2">
-                                    <div class="w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center">
-                                        <i class="fas fa-heart text-white text-xs"></i>
-                                    </div>
-                                    <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                                        <i class="fas fa-share text-white text-xs"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div>
+              <div class="text-3xl font-bold gradient-text">+7.8M</div>
+              <div class="text-sm text-gray-400">Vídeos analizados</div>
             </div>
+            <div>
+              <div class="text-3xl font-bold gradient-text">24/7</div>
+              <div class="text-sm text-gray-400">Soporte activo</div>
+            </div>
+          </div>
         </div>
-    </section>
-
-    <!-- Main Functionality Section -->
-    <section class="py-12 px-6 lg:px-12 bg-gray-900/50">
-        <div class="container mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-12">
-                <span class="gradient-text">Potencia tu Contenido</span>
-            </h2>
+        
+        <div class="relative">
+          <div class="card-3d relative rounded-2xl overflow-hidden shadow-2xl">
+            <div class="bg-gradient-to-br from-purple-900/40 to-pink-800/30 backdrop-blur-xl border border-white/10 p-1 rounded-2xl">
+              <div class="bg-gray-900 rounded-xl aspect-video flex items-center justify-center">
+                <div class="bg-gradient-to-br from-purple-600 to-pink-500 w-full h-full flex items-center justify-center opacity-20"></div>
+                <div class="absolute z-10">
+                  <div class="w-20 h-20 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center animate-pulse">
+                    <i class="fas fa-cloud-upload-alt text-3xl text-white"></i>
+                  </div>
+                  <p class="mt-4 font-semibold">Arrastra tu vídeo aquí</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="absolute -bottom-8 -left-6 w-24 h-24 bg-cyan-400 rounded-xl -z-10 rotate-12"></div>
+          <div class="absolute -top-8 -right-6 w-24 h-24 bg-pink-500 rounded-xl -z-10 -rotate-12"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Funcionalidad Principal - Upload & Analyze -->
+  <section id="upload" class="py-20 px-4">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold mb-4">Potencia tu contenido con <span class="gradient-text">ViralBoostAI</span></h2>
+        <p class="text-lg text-gray-400 max-w-2xl mx-auto">Sube tu vídeo y obtén análisis avanzados para maximizar su viralidad y engagement</p>
+      </div>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- Área de Subida y Vista Previa -->
+        <div>
+          <div class="upload-box bg-gray-900/50 border-2 border-dashed rounded-2xl p-8 flex flex-col items-center justify-center text-center hover:shadow-lg hover:shadow-purple-500/10 transition-all duration-300">
+            <i class="fas fa-cloud-upload-alt text-4xl text-purple-500 mb-4"></i>
+            <h3 class="text-2xl font-bold mb-2">Sube tu vídeo</h3>
+            <p class="text-gray-400 mb-6">Arrastra y suelta un archivo de vídeo o haz clic para buscar</p>
+            <input type="file" id="videoFile" accept="video/*" class="hidden">
+            <button id="uploadBtn" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 rounded-lg shadow-lg shadow-purple-500/30 font-medium hover:opacity-90 transition-opacity">
+              Seleccionar vídeo
+            </button>
+            <p class="text-sm text-gray-500 mt-3">Formatos soportados: MP4, MOV, AVI, MKV</p>
             
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Metrics Column -->
-                <div class="bg-gray-800/50 rounded-2xl p-6 border border-gray-700">
-                    <h3 class="text-xl font-bold mb-4 flex items-center space-x-2">
-                        <i class="fas fa-chart-line text-pink-500"></i>
-                        <span>Métricas de tus Videos</span>
-                    </h3>
-                    <div class="h-64">
-                        <canvas id="metricsChart"></canvas>
-                    </div>
-                    <p class="text-sm text-gray-400 mt-4">
-                        La IA analiza el rendimiento histórico de tus videos para predecir el mejor momento para publicar.
-                    </p>
-                </div>
-                
-                <!-- Chat Column -->
-                <div class="bg-gray-800/50 rounded-2xl p-6 border border-gray-700">
-                    <h3 class="text-xl font-bold mb-4 flex items-center space-x-2">
-                        <i class="fas fa-robot text-blue-500"></i>
-                        <span>Asistente ViralBoostAI</span>
-                    </h3>
-                    <div class="h-64 overflow-y-auto mb-4 space-y-3" id="chat-container">
-                        <div class="chat-message-ai p-3 text-white max-w-xs">
-                            ¡Hola! Soy tu asistente de ViralTikAI. Puedes pedirme que analice un video o preguntarme cómo mejorar tus publicaciones.
-                        </div>
-                    </div>
-                    <div class="flex space-x-2">
-                        <input type="text" id="chat-input" placeholder="Escribe un mensaje..." class="flex-1 bg-gray-700 border border-gray-600 rounded-full px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-pink-500">
-                        <button id="send-chat-btn" class="bg-pink-600 hover:bg-pink-700 text-white w-10 h-10 rounded-full flex items-center justify-center">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Upload Column -->
-                <div class="bg-gray-800/50 rounded-2xl p-6 border border-gray-700">
-                    <h3 class="text-xl font-bold mb-4 flex items-center space-x-2">
-                        <i class="fas fa-cloud-upload-alt text-purple-500"></i>
-                        <span>Analiza tu Video</span>
-                    </h3>
-                    <div class="upload-box rounded-xl p-6 text-center cursor-pointer mb-4" id="upload-container">
-                        <i class="fas fa-video text-4xl text-purple-400 mb-3"></i>
-                        <p class="font-medium">Sube un video para analizar</p>
-                        <p class="text-sm text-gray-400 mt-1">Arrastra y suelta o haz clic para seleccionar</p>
-                        <input type="file" id="video-upload" accept="video/*" class="hidden">
-                    </div>
-                    <div id="video-preview" class="hidden mb-4">
-                        <video id="preview-player" controls class="w-full rounded-lg"></video>
-                        <button id="analyze-btn" class="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white py-3 rounded-lg mt-3 font-medium">
-                            Analizar Video con IA
-                        </button>
-                    </div>
-                </div>
+            <!-- Preview del Video -->
+            <div id="videoPreview" class="mt-8 w-full aspect-video bg-gray-800/50 rounded-xl overflow-hidden hidden">
+              <video id="uploadedVideo" class="w-full h-full object-cover" controls></video>
             </div>
+          </div>
+          
+          <button id="analyzeBtn" class="w-full mt-8 py-4 bg-gradient-to-r from-teal-500 to-cyan-600 rounded-xl shadow-lg shadow-teal-500/20 font-bold text-lg hover:opacity-90 transition-opacity hidden disabled:opacity-50">
+            <span id="analyzeText">Analizar Vídeo</span>
+            <span id="loadingSpinner" class="hidden ml-2">
+              <i class="fas fa-spinner fa-spin"></i> Procesando...
+            </span>
+          </button>
         </div>
-    </section>
-
-    <!-- Analysis Results Section -->
-    <section class="py-16 px-6 lg:px-12" id="results-section" style="display: none;">
-        <div class="container mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-4">
-                <span class="gradient-text">Resultados del Análisis</span>
-            </h2>
-            <p class="text-center text-gray-400 mb-12 max-w-2xl mx-auto">
-                Basado en el análisis de inteligencia artificial de tu video y las tendencias actuales de TikTok.
-            </p>
+        
+        <!-- Área de Resultados -->
+        <div>
+          <div id="resultsSection" class="h-full flex flex-col">
+            <div class="result-card rounded-2xl p-6 flex-1">
+              <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold">Análisis del vídeo</h3>
+                <div class="flex space-x-2">
+                  <button class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-download"></i>
+                  </button>
+                  <button class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-share-alt"></i>
+                  </button>
+                </div>
+              </div>
+              
+              <!-- Métricas con Gráfico -->
+              <div class="mb-8">
+                <div class="chart-container h-64 rounded-xl p-4 mb-4">
+                  <canvas id="metricsChart"></canvas>
+                </div>
+              </div>
+              
+              <!-- Transcripción y Hashtags -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <h4 class="font-bold text-lg mb-3 flex items-center gap-2">
+                    <i class="fas fa-file-alt text-purple-400"></i> Transcripción
+                  </h4>
+                  <div id="transcription" class="text-sm bg-gray-800/50 rounded-lg p-4 max-h-36 overflow-y-auto">
+                    <p class="text-gray-400">La transcripción aparecerá aquí después del análisis...</p>
+                  </div>
+                </div>
+                
+                <div>
+                  <h4 class="font-bold text-lg mb-3 flex items-center gap-2">
+                    <i class="fas fa-hashtag text-pink-400"></i> Hashtags Recomendados
+                  </h4>
+                  <div id="hashtagsContainer" class="flex flex-wrap gap-2">
+                    <div class="text-gray-400 text-sm">Los hashtags recomendados aparecerán aquí...</div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Área de Chat -->
+              <div class="mt-6">
+                <h4 class="font-bold text-lg mb-3 flex items-center gap-2">
+                  <i class="fas fa-robot text-cyan-400"></i> Asistente ViralBoostAI
+                </h4>
+                
+                <div id="chatContainer" class="bg-gray-800/30 rounded-xl p-4 mb-3 h-48 overflow-y-auto flex flex-col gap-3">
+                  <!-- Mensaje inicial del asistente -->
+                  <div class="flex">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center mr-3 flex-shrink-0">
+                      <i class="fas fa-robot text-xs"></i>
+                    </div>
+                    <div class="chat-message-ai px-4 py-3 max-w-[85%]">
+                      <p class="text-sm">¡Hola! Soy tu asistente de ViralBoostAI. Sube un vídeo y te ayudaré a optimizarlo para máxima viralidad.</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="flex gap-2">
+                  <input 
+                    id="chatInput"
+                    type="text" 
+                    placeholder="Pregúntame sobre optimización de vídeos..." 
+                    class="flex-1 bg-gray-800/50 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500"
+                  >
+                  <button id="sendChatBtn" class="w-12 h-12 flex items-center justify-center bg-gradient-to-r from-purple-600 to-pink-500 rounded-xl">
+                    <i class="fas fa-paper-plane"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Características -->
+  <section id="features" class="py-20 px-4 bg-gradient-to-b from-purple-900/30 to-gray-900/0">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold mb-4">Nuestras <span class="gradient-text">Herramientas Avanzadas</span></h2>
+        <p class="text-lg text-gray-400 max-w-2xl mx-auto">Todo lo que necesitas para llevar tus vídeos al siguiente nivel</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Feature Card 1 -->
+        <div class="result-card rounded-2xl p-6 hover:shadow-lg hover:shadow-purple-500/10 transition-all duration-300">
+          <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center mb-6">
+            <i class="fas fa-brain text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Análisis de Contenido AI</h3>
+          <p class="text-gray-400 mb-4">Nuestra IA examina cada segundo de tu vídeo para identificar oportunidades de mejora.</p>
+          <div class="bg-purple-900/50 rounded-lg p-3 border border-purple-800">
+            <ul class="space-y-2 text-sm">
+              <li class="flex items-center gap-2">
+                <i class="fas fa-check-circle text-green-400"></i>
+                <span>Identifica momentos clave para retención</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fas fa-check-circle text-green-400"></i>
+                <span>Detecta contenido de alta viralidad</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fas fa-check-circle text-green-400"></i>
+                <span>Análisis de lenguaje corporal y entonación</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Feature Card 2 -->
+        <div class="result-card rounded-2xl p-6 hover:shadow-lg hover:shadow-cyan-500/10 transition-all duration-300">
+          <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-600 to-teal-500 flex items-center justify-center mb-6">
+            <i class="fas fa-chart-line text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Métricas Predictivas</h3>
+          <p class="text-gray-400 mb-4">Predicciones precisas del rendimiento de tu vídeo antes de publicarlo.</p>
+          <div class="bg-cyan-900/50 rounded-lg p-3 border border-cyan-800">
+            <ul class="space-y-2 text-sm">
+              <li class="flex items-center gap-2">
+                <i class="fas fa-check-circle text-green-400"></i>
+                <span>Previsión de tasas de retención</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fas fa-check-circle text-green-400"></i>
+                <span>Estimación de shares potenciales</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fas fa-check-circle text-green-400"></i>
+                <span>Análisis de sentimiento del público</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Feature Card 3 -->
+        <div class="result-card rounded-2xl p-6 hover:shadow-lg hover:shadow-pink-500/10 transition-all duration-300">
+          <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-pink-600 to-red-500 flex items-center justify-center mb-6">
+            <i class="fas fa-hashtag text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Optimización de Hashtags</h3>
+          <p class="text-gray-400 mb-4">Genera hashtags personalizados para maximizar el descubrimiento de tu contenido.</p>
+          <div class="bg-pink-900/50 rounded-lg p-3 border border-pink-800">
+            <ul class="space-y-2 text-sm">
+              <li class="flex items-center gap-2">
+                <i class="fas fa-check-circle text-green-400"></i>
+                <span>Basado en tendencias actuales</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fas fa-check-circle text-green-400"></i>
+                <span>Personalizado por nicho de mercado</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fas fa-check-circle text-green-400"></i>
+                <span>Compatibilidad multiplataforma</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Feature Card 4 -->
+        <div class="result-card rounded-2xl p-6 hover:shadow-lg hover:shadow-purple-500/10 transition-all duration-300">
+          <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-500 flex items-center justify-center mb-6">
+            <i class="fas fa-comments text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Asistente Inteligente</h3>
+          <p class="text-gray-400 mb-4">Nuestro chatbot te guía paso a paso hacia la optimización perfecta.</p>
+          <div class="bg-indigo-900/50 rounded-lg p-3 border border-indigo-800">
+            <ul class="space-y-2 text-sm">
+              <li class="flex items-center gap-2">
+                <i class="fas fa-check-circle text-green-400"></i>
+                <span>Sugerencias en tiempo real</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fas fa-check-circle text-green-400"></i>
+                <span>Consejos para mejores prácticas</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fas fa-check-circle text-green-400"></i>
+                <span>Respuestas basadas en millones de casos</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Feature Card 5 -->
+        <div class="result-card rounded-2xl p-6 hover:shadow-lg hover:shadow-teal-500/10 transition-all duration-300">
+          <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-teal-600 to-green-500 flex items-center justify-center mb-6">
+            <i class="fas fa-arrows-rotate text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Integraciones</h3>
+          <p class="text-gray-400 mb-4">Conéctate directamente con tus plataformas favoritas.</p>
+          <div class="bg-teal-900/50 rounded-lg p-3 border border-teal-800">
+            <div class="flex justify-around mb-4">
+              <i class="fab fa-youtube text-red-500 text-2xl"></i>
+              <i class="fab fa-tiktok text-black bg-white rounded-full text-2xl"></i>
+              <i class="fab fa-instagram text-purple-500 text-2xl"></i>
+              <i class="fab fa-facebook text-blue-500 text-2xl"></i>
+            </div>
+            <p class="text-sm text-center">Importa vídeos directamente desde tus plataformas o exporta resultados automáticamente.</p>
+          </div>
+        </div>
+        
+        <!-- Feature Card 6 -->
+        <div class="result-card rounded-2xl p-6 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300">
+          <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center mb-6">
+            <i class="fas fa-trophy text-white text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Procesamiento Premium</h3>
+          <p class="text-gray-400 mb-4">Prioridad en análisis y funciones avanzadas para creadores profesionales.</p>
+          <div class="bg-blue-900/50 rounded-lg p-3 border border-blue-800">
+            <ul class="space-y-2 text-sm">
+              <li class="flex items-center gap-2">
+                <i class="fas fa-bolt text-yellow-400"></i>
+                <span>Análisis 4x más rápido</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fas fa-infinity text-blue-300"></i>
+                <span>Vídeos de hasta 60 minutos</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i class="fas fa-star text-purple-400"></i>
+                <span>Soporte prioritario 24/7</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Cómo Funciona -->
+  <section id="how-it-works" class="py-20 px-4">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold mb-4">¿Cómo funciona <span class="gradient-text">ViralBoostAI</span>?</h2>
+        <p class="text-lg text-gray-400 max-w-2xl mx-auto">En solo 3 sencillos pasos transforma tus vídeos en contenido viral</p>
+      </div>
+      
+      <div class="relative">
+        <!-- Línea decorativa -->
+        <div class="absolute top-20 bottom-20 left-1/2 -ml-px w-0.5 bg-gradient-to-b from-purple-500 to-cyan-500 hidden md:block"></div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <!-- Paso 1 -->
+          <div class="relative result-card rounded-2xl p-8 hover:shadow-lg hover:shadow-purple-500/10 transition-all">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center text-white font-bold text-2xl mb-6">
+              1
+            </div>
+            <h3 class="text-2xl font-bold mb-3">Sube tu vídeo</h3>
+            <p class="text-gray-400 mb-6">Arrastra y suelta tu archivo de vídeo o selecciónalo desde tu dispositivo. Compatible con todas las plataformas.</p>
+            <div class="bg-purple-900/20 p-4 rounded-xl">
+              <div class="flex items-center text-sm gap-2 mb-2">
+                <i class="fas fa-clock text-purple-400"></i>
+                <span>Procesamiento: 2-15 minutos</span>
+              </div>
+              <div class="flex items-center text-sm gap-2">
+                <i class="fas fa-sd-card text-cyan-400"></i>
+                <span>Tamaño máximo: 10GB</span>
+              </div>
+            </div>
             
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <!-- Optimal Time Card -->
-                <div class="result-card rounded-2xl p-6">
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-10 h-10 rounded-full bg-pink-500/20 flex items-center justify-center">
-                            <i class="fas fa-clock text-pink-500"></i>
-                        </div>
-                        <h3 class="text-lg font-bold">Hora Ideal para Publicar</h3>
-                    </div>
-                    <p id="optimal-time" class="text-xl font-medium bg-gray-800 rounded-lg p-3 text-center">
-                        Miércoles a las 18:00
-                    </p>
-                    <p class="text-sm text-gray-400 mt-2">
-                        Nuestra IA determinó que este es el momento en que tu audiencia está más activa según tus métricas históricas.
-                    </p>
-                </div>
-                
-                <!-- Hashtags Card -->
-                <div class="result-card rounded-2xl p-6">
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
-                            <i class="fas fa-hashtag text-blue-500"></i>
-                        </div>
-                        <h3 class="text-lg font-bold">Hashtags Recomendados</h3>
-                    </div>
-                    <div class="flex flex-wrap gap-2" id="hashtags-container">
-                        <!-- Hashtags will be added here by JS -->
-                    </div>
-                    <p class="text-sm text-gray-400 mt-2">
-                        Estos hashtags tienen alta tasa de engagement y son relevantes para tu contenido.
-                    </p>
-                </div>
-                
-                <!-- Description Card -->
-                <div class="result-card rounded-2xl p-6 lg:col-span-2">
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
-                            <i class="fas fa-align-left text-purple-500"></i>
-                        </div>
-                        <h3 class="text-lg font-bold">Descripción Sugerida</h3>
-                    </div>
-                    <p id="suggested-description" class="bg-gray-800 rounded-lg p-4 italic">
-                        "¿Alguna vez te has preguntado cómo sería bailar bajo luces de neón? 🌈✨ Este fue mi momento mágico que quise compartir con todos ustedes. ¡Déjenme saber en los comentarios si les gustaría un tutorial! #baile #neon #viral"
-                    </p>
-                    <div class="flex justify-end mt-2">
-                        <button class="text-pink-500 hover:text-pink-400 text-sm flex items-center">
-                            <i class="fas fa-copy mr-1"></i>
-                            Copiar al portapapeles
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Audio Trend Card -->
-                <div class="result-card rounded-2xl p-6 lg:col-span-2">
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
-                            <i class="fas fa-music text-green-500"></i>
-                        </div>
-                        <h3 class="text-lg font-bold">Trend de Audio Recomendado</h3>
-                    </div>
-                    <div class="flex items-center space-x-4 bg-gray-800 rounded-lg p-4">
-                        <div class="w-12 h-12 bg-gradient-to-r from-pink-500 to-purple-500 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-music text-white"></i>
-                        </div>
-                        <div class="flex-1">
-                            <p id="audio-trend" class="font-medium">"Dancing in the Moonlight" - Toploader</p>
-                            <p class="text-sm text-gray-400">Tendencia creciente con 1.2M videos</p>
-                        </div>
-                        <button class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-full text-sm">
-                            <i class="fab fa-tiktok mr-1"></i> Usar este audio
-                        </button>
-                    </div>
-                </div>
+            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-purple-600 to-pink-500 rounded-lg -z-10 rotate-12"></div>
+          </div>
+          
+          <!-- Paso 2 -->
+          <div class="relative result-card rounded-2xl p-8 hover:shadow-lg hover:shadow-cyan-500/10 transition-all">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-cyan-600 to-teal-500 flex items-center justify-center text-white font-bold text-2xl mb-6">
+              2
+            </div>
+            <h3 class="text-2xl font-bold mb-3">Análisis avanzado</h3>
+            <p class="text-gray-400 mb-6">Nuestra IA analiza cada aspecto de tu vídeo: contenido, audio, ritmo, emociones y más.</p>
+            <div class="bg-cyan-900/20 p-4 rounded-xl">
+              <div class="flex items-center text-sm gap-2 mb-2">
+                <i class="fas fa-brain text-yellow-300"></i>
+                <span>3 algoritmos simultáneos</span>
+              </div>
+              <div class="flex items-center text-sm gap-2">
+                <i class="fas fa-chart-pie text-pink-400"></i>
+                <span>+150 puntos de análisis</span>
+              </div>
             </div>
             
-            <div class="text-center mt-12">
-                <button id="new-analysis-btn" class="border border-pink-600 text-pink-400 hover:bg-pink-900/30 px-8 py-3 rounded-full flex items-center space-x-2 transition-all mx-auto">
-                    <i class="fas fa-redo"></i>
-                    <span class="font-medium">Realizar nuevo análisis</span>
-                </button>
+            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-cyan-600 to-teal-500 rounded-lg -z-10 rotate-12"></div>
+          </div>
+          
+          <!-- Paso 3 -->
+          <div class="relative result-card rounded-2xl p-8 hover:shadow-lg hover:shadow-pink-500/10 transition-all">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-pink-600 to-red-500 flex items-center justify-center text-white font-bold text-2xl mb-6">
+              3
             </div>
+            <h3 class="text-2xl font-bold mb-3">Optimiza y Viraliza</h3>
+            <p class="text-gray-400 mb-6">Recibe recomendaciones personalizadas para aumentar al máximo el engagement y viralidad.</p>
+            <div class="bg-pink-900/20 p-4 rounded-xl">
+              <div class="flex items-center text-sm gap-2 mb-2">
+                <i class="fas fa-bolt text-yellow-400"></i>
+                <span>Tácticas probadas científicamente</span>
+              </div>
+              <div class="flex items-center text-sm gap-2">
+                <i class="fas fa-viruses text-purple-400"></i>
+                <span>Potencial viral incrementado hasta 5x</span>
+              </div>
+            </div>
+            
+            <div class="absolute top-0 right-0 w-24 h-24 -mt-8 -mr-8 bg-gradient-to-br from-pink-600 to-red-500 rounded-lg -z-10 rotate-12"></div>
+          </div>
         </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="border-t border-gray-800 py-8 px-6 lg:px-12 mt-12">
-        <div class="container mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="flex items-center space-x-2 mb-4 md:mb-0">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 flex items-center justify-center">
-                        <i class="fas fa-bolt text-white text-xs"></i>
-                    </div>
-                    <span class="text-lg font-bold gradient-text">ViralBoostAI</span>
-                </div>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                        <i class="fab fa-tiktok"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                        <i class="fab fa-github"></i>
-                    </a>
-                </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Testimonios -->
+  <section id="testimonials" class="py-20 px-4 bg-gradient-to-b from-gray-900/0 to-purple-900/30">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold mb-4">Casos de <span class="gradient-text">Éxito</span></h2>
+        <p class="text-lg text-gray-400 max-w-2xl mx-auto">Lo que dicen creadores que han transformado sus contenidos con ViralBoostAI</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Testimonio 1 -->
+        <div class="result-card rounded-2xl p-6">
+          <div class="flex items-center mb-6">
+            <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Ana Martínez" class="w-12 h-12 rounded-full border-2 border-purple-500">
+            <div class="ml-4">
+              <div class="font-bold">Ana Martínez</div>
+              <div class="text-sm text-gray-400 flex items-center">
+                @anacreativa <i class="fab fa-tiktok ml-2 text-black bg-white rounded-full"></i>
+              </div>
             </div>
-            <div class="mt-8 text-center text-gray-500 text-sm">
-                <p>© 2023 ViralBoostAI. Todos los derechos reservados.</p>
-                <p class="mt-1">Esta aplicación no está afiliada con TikTok. Es un proyecto independiente.</p>
+          </div>
+          <p class="text-gray-300 mb-6">
+            "Gracias a ViralBoostAI mis vídeos alcanzaron el millón de visitas en solo 3 semanas. Sus recomendaciones de hashtags y análisis de contenido son IMPRESIONANTES!"
+          </p>
+          <div class="flex justify-between items-center">
+            <div>
+              <div class="font-bold text-xl gradient-text">+375%</div>
+              <div class="text-xs">Incremento en views</div>
             </div>
+            <div class="text-3xl text-purple-400">
+              <i class="fas fa-quote-right"></i>
+            </div>
+          </div>
         </div>
-    </footer>
-
-    <script>
-        // Simulated user data (in a real app, this would come from TikTok API)
-        const simulatedUser = {
-            loggedIn: false,
-            username: "creadordetendencias",
-            avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-            videos: [
-                { day: "Lunes", views: 12000 },
-                { day: "Martes", views: 18000 },
-                { day: "Miércoles", views: 25000 },
-                { day: "Jueves", views: 15000 },
-                { day: "Viernes", views: 30000 },
-                { day: "Sábado", views: 28000 },
-                { day: "Domingo", views: 20000 }
-            ]
-        };
-
-        // Hashtags database
-        const hashtags = [
-            "#fyp", "#viral", "#parati", "#humor", "#baile", 
-            "#tendencia", "#neon", "#dance", "#music", "#fun",
-            "#comedia", "#trend", "#explore", "#foryou", "#love"
-        ];
-
-        // Audio trends
-        const audioTrends = [
-            { name: "Dancing in the Moonlight - Toploader", popularity: "1.2M videos" },
-            { name: "Savage Love - Jawsh 685, Jason Derulo", popularity: "4.5M videos" },
-            { name: "Dreams - Fleetwood Mac", popularity: "2.8M videos" },
-            { name: "Blinding Lights - The Weeknd", popularity: "6.1M videos" }
-        ];
-
-        // Chat responses
-        const chatResponses = {
-            "analiza mi video": "¡Claro! Por favor, sube tu video usando el botón de carga en la sección derecha y comenzaré el análisis inmediatamente.",
-            "hola": "¡Hola! Soy ViralTikAI, tu asistente para hacer crecer tu contenido en TikTok. ¿En qué puedo ayudarte hoy?",
-            "qué puedes hacer": "Puedo analizar tus videos para sugerirte: 🕒 La mejor hora para publicar, #️⃣ Hashtags efectivos, 📝 Descripciones atractivas, y 🎵 Audios en tendencia. ¡Pregúntame lo que necesites!",
-            "gracias": "¡De nada! Estoy aquí para ayudarte a hacer crecer tu cuenta. ¿Hay algo más en lo que pueda ayudarte?",
-            "default": "No estoy seguro de entender. Puedes pedirme que analice un video o preguntarme sobre estrategias para TikTok. ¿En qué puedo ayudarte?"
-        };
-
-        // DOM Elements
-        const loginBtn = document.getElementById('login-btn');
-        const heroLoginBtn = document.getElementById('hero-login-btn');
-        const logoutBtn = document.getElementById('logout-btn');
-        const userProfile = document.getElementById('user-profile');
-        const username = document.getElementById('username');
-        const userAvatar = document.getElementById('user-avatar');
-        const uploadContainer = document.getElementById('upload-container');
-        const videoUpload = document.getElementById('video-upload');
-        const videoPreview = document.getElementById('video-preview');
-        const previewPlayer = document.getElementById('preview-player');
-        const analyzeBtn = document.getElementById('analyze-btn');
-        const resultsSection = document.getElementById('results-section');
-        const newAnalysisBtn = document.getElementById('new-analysis-btn');
-        const chatInput = document.getElementById('chat-input');
-        const sendChatBtn = document.getElementById('send-chat-btn');
-        const chatContainer = document.getElementById('chat-container');
-        const hashtagsContainer = document.getElementById('hashtags-container');
-        const optimalTime = document.getElementById('optimal-time');
-        const suggestedDescription = document.getElementById('suggested-description');
-        const audioTrend = document.getElementById('audio-trend');
-
-        // Initialize metrics chart
-        const ctx = document.getElementById('metricsChart').getContext('2d');
-        const metricsChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: simulatedUser.videos.map(video => video.day),
-                datasets: [{
-                    label: 'Vistas por día',
-                    data: simulatedUser.videos.map(video => video.views),
-                    backgroundColor: 'rgba(99, 102, 241, 0.2)',
-                    borderColor: 'rgba(99, 102, 241, 1)',
-                    borderWidth: 2,
-                    tension: 0.4,
-                    fill: true
-                }]
+        
+        <!-- Testimonio 2 -->
+        <div class="result-card rounded-2xl p-6">
+          <div class="flex items-center mb-6">
+            <img src="https://randomuser.me/api/portraits/men/42.jpg" alt="Carlos Ruiz" class="w-12 h-12 rounded-full border-2 border-cyan-500">
+            <div class="ml-4">
+              <div class="font-bold">Carlos Ruiz</div>
+              <div class="text-sm text-gray-400 flex items-center">
+                @gamerpro <i class="fab fa-youtube ml-2 text-red-500"></i>
+              </div>
+            </div>
+          </div>
+          <p class="text-gray-300 mb-6">
+            "Como creador de gaming, el análisis de los puntos más atractivos de mis vídeos me ha ayudado a retener muchísimo más público. ¡Ahora mis vídeos tienen 75% menos abandonos!"
+          </p>
+          <div class="flex justify-between items-center">
+            <div>
+              <div class="font-bold text-xl gradient-text">+200K</div>
+              <div class="text-xs">Suscriptores nuevos</div>
+            </div>
+            <div class="text-3xl text-cyan-400">
+              <i class="fas fa-quote-right"></i>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Testimonio 3 -->
+        <div class="result-card rounded-2xl p-6">
+          <div class="flex items-center mb-6">
+            <img src="https://randomuser.me/api/portraits/women/67.jpg" alt="Laura Chen" class="w-12 h-12 rounded-full border-2 border-pink-500">
+            <div class="ml-4">
+              <div class="font-bold">Laura Chen</div>
+              <div class="text-sm text-gray-400 flex items-center">
+                @fitnesslaura <i class="fab fa-instagram ml-2 text-pink-500"></i>
+              </div>
+            </div>
+          </div>
+          <p class="text-gray-300 mb-6">
+            "El chatbot me guió para optimizar mis vídeos paso a paso. En 1 mes mis reels pasaron de 10k a 2M de visualizaciones. Esta herramienta es magia en estado puro!"
+          </p>
+          <div class="flex justify-between items-center">
+            <div>
+              <div class="font-bold text-xl gradient-text">x45</div>
+              <div class="text-xs">Más engagement</div>
+            </div>
+            <div class="text-3xl text-pink-400">
+              <i class="fas fa-quote-right"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer class="py-12 px-4 border-t border-purple-900/50">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+        <div class="md:col-span-2">
+          <div class="flex items-center">
+            <div class="h-10 w-10 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center mr-3">
+              <i class="fas fa-bolt text-white"></i>
+            </div>
+            <span class="text-2xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">ViralBoost<span class="text-cyan-400">AI</span></span>
+          </div>
+          <p class="text-gray-400 mt-4 max-w-sm">
+            La plataforma líder en optimización de vídeos con Inteligencia Artificial para creadores de contenido. Haz crecer tu audiencia como nunca antes.
+          </p>
+          <div class="flex mt-6 space-x-4">
+            <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-gradient-to-br from-purple-600 to-pink-500 transition-all">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-gradient-to-br from-purple-600 to-pink-500 transition-all">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-gradient-to-br from-purple-600 to-pink-500 transition-all">
+              <i class="fab fa-tiktok"></i>
+            </a>
+            <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-gradient-to-br from-purple-600 to-pink-500 transition-all">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-bold mb-4">Enlaces</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-cyan-300 transition-colors">Inicio</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-cyan-300 transition-colors">Funciones</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-cyan-300 transition-colors">Precios</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-cyan-300 transition-colors">Blog</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-cyan-300 transition-colors">Contacto</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-bold mb-4">Recursos</h4>
+          <ul class="space-y-2">
+            <li>
+              <a href="privacy.html" class="text-gray-400 hover:text-cyan-300 transition-colors">Política de Privacidad</a>
+            </li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-bold mb-4">Newsletter</h4>
+          <p class="text-gray-400 mb-3">Recibe consejos semanales para mejorar tus vídeos</p>
+          <div class="flex">
+            <input type="email" placeholder="Tu email" class="bg-gray-800/50 rounded-l-lg px-4 py-2 w-full focus:outline-none focus:ring-1 focus:ring-purple-500">
+            <button class="bg-gradient-to-br from-purple-600 to-pink-500 px-4 rounded-r-lg">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-12 pt-6 text-center">
+        <p class="text-gray-500">
+          &copy; 2023 ViralBoostAI. Todos los derechos reservados.
+        </p>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Scripts JS -->
+  <script>
+    // Efecto de partículas en el fondo
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 30;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        const size = Math.random() * 20 + 5;
+        const posX = Math.random() * 100;
+        const posY = Math.random() * 100;
+        const duration = Math.random() * 10 + 10;
+        const delay = Math.random() * 5;
+        
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${posX}%`;
+        particle.style.top = `${posY}%`;
+        particle.style.animation = `float ${duration}s ease-in-out infinite`;
+        particle.style.animationDelay = `${delay}s`;
+        particle.style.opacity = Math.random() * 0.5 + 0.1;
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+    
+    // Inicializar gráfico de métricas
+    function initChart() {
+      const ctx = document.getElementById('metricsChart').getContext('2d');
+      
+      // Datos del gráfico
+      const data = {
+        labels: ['Retención', 'Share Potencial', 'Viralidad', 'Sonido', 'Visibilidad'],
+        datasets: [{
+          label: 'Puntuación del Vídeo',
+          data: [85, 70, 90, 65, 75],
+          backgroundColor: [
+            'rgba(124, 58, 237, 0.6)',
+            'rgba(236, 72, 153, 0.6)',
+            'rgba(14, 165, 233, 0.6)',
+            'rgba(139, 92, 246, 0.6)',
+            'rgba(8, 145, 178, 0.6)'
+          ],
+          borderColor: [
+            'rgba(124, 58, 237, 1)',
+            'rgba(236, 72, 153, 1)',
+            'rgba(14, 165, 233, 1)',
+            'rgba(139, 92, 246, 1)',
+            'rgba(8, 145, 178, 1)'
+          ],
+          borderWidth: 2,
+          borderRadius: 8,
+        }]
+      };
+      
+      // Opciones del gráfico
+      const options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            backgroundColor: 'rgba(30, 41, 59, 0.9)',
+            titleColor: '#fff',
+            bodyColor: '#e2e8f0',
+            padding: 12,
+            boxPadding: 6,
+            cornerRadius: 8,
+            displayColors: false,
+            callbacks: {
+              label: function(context) {
+                return `${context.label}: ${context.raw}%`;
+              }
+            }
+          }
+        },
+        scales: {
+          r: {
+            grid: {
+              color: 'rgba(255, 255, 255, 0.1)'
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        },
-                        ticks: {
-                            color: 'rgba(255, 255, 255, 0.7)'
-                        }
-                    },
-                    x: {
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        },
-                        ticks: {
-                            color: 'rgba(255, 255, 255, 0.7)'
-                        }
-                    }
-                }
-            }
+            angleLines: {
+              color: 'rgba(255, 255, 255, 0.1)'
+            },
+            pointLabels: {
+              color: '#94a3b8',
+              font: {
+                size: 10
+              }
+            },
+            suggestedMin: 0,
+            suggestedMax: 100
+          }
+        }
+      };
+      
+      // Crear gráfico
+      return new Chart(ctx, {
+        type: 'radar',
+        data: data,
+        options: options
+      });
+    }
+    
+    // Manejar la subida de videos
+    function handleUpload() {
+      const fileInput = document.getElementById('videoFile');
+      const uploadBtn = document.getElementById('uploadBtn');
+      const videoPreview = document.getElementById('videoPreview');
+      const analyzeBtn = document.getElementById('analyzeBtn');
+      
+      // Simular clic en input cuando se presiona el botón
+      uploadBtn.addEventListener('click', () => {
+        fileInput.click();
+      });
+      
+      // Manejar cuando se selecciona un archivo
+      fileInput.addEventListener('change', function(e) {
+        if (this.files && this.files[0]) {
+          const file = this.files[0];
+          const fileName = file.name.toLowerCase();
+          
+          // Validar extensión del archivo
+          const validExtensions = ['.mp4', '.mov', '.avi', '.mkv'];
+          const isValid = validExtensions.some(ext => fileName.endsWith(ext));
+          
+          if (!isValid) {
+            alert('Formato de archivo no válido. Por favor sube un archivo MP4, MOV, AVI o MKV.');
+            return;
+          }
+          
+          // Mostrar vista previa
+          const uploadedVideo = document.getElementById('uploadedVideo');
+          const blobUrl = URL.createObjectURL(file);
+          uploadedVideo.src = blobUrl;
+          videoPreview.classList.remove('hidden');
+          
+          // Mostrar botón de análisis
+          analyzeBtn.classList.remove('hidden');
+          
+          // Simular hover activo
+          const uploadBox = document.querySelector('.upload-box');
+          uploadBox.classList.add('border-solid');
+          uploadBox.style.borderColor = '#ec4899';
+        }
+      });
+    }
+    
+    // Analizar video (simular)
+    function handleAnalyze() {
+      const analyzeBtn = document.getElementById('analyzeBtn');
+      const loadingSpinner = document.getElementById('loadingSpinner');
+      const analyzeText = document.getElementById('analyzeText');
+      const fileInput = document.getElementById('videoFile');
+
+      analyzeBtn.addEventListener('click', async function() {
+        analyzeBtn.disabled = true;
+        analyzeText.classList.add('hidden');
+        loadingSpinner.classList.remove('hidden');
+
+        try {
+          const formData = new FormData();
+          formData.append('file', fileInput.files[0]);
+
+          const response = await fetch('http://127.0.0.1:8000/analizar/', {
+            method: 'POST',
+            body: formData
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            // Mostrar error específico del backend
+            alert(data.detail || 'Error al procesar el vídeo. Por favor inténtalo de nuevo.');
+            return;
+          }
+
+          // Mostrar resultados reales del backend
+          showResults(data);
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Error al procesar el vídeo. Por favor inténtalo de nuevo.');
+        } finally {
+          analyzeBtn.disabled = false;
+          analyzeText.classList.remove('hidden');
+          loadingSpinner.classList.add('hidden');
+        }
+      });
+    }
+
+    // Mostrar resultados del análisis
+    function showResults(data) {
+      const transcription = document.getElementById('transcription');
+      const hashtagsContainer = document.getElementById('hashtagsContainer');
+
+      // Actualizar transcripción
+      if (data && data.transcripcion) {
+        transcription.innerHTML = `<p class="text-gray-300">${data.transcripcion.replace(/\n/g, '<br>')}</p>`;
+      } else {
+        transcription.innerHTML = `<p class="text-gray-400">No se encontró transcripción.</p>`;
+      }
+
+      // Mostrar hashtags recomendados
+      hashtagsContainer.innerHTML = '';
+      if (data && data.recomendaciones && Array.isArray(data.recomendaciones.hashtags)) {
+        data.recomendaciones.hashtags.forEach(tag => {
+          const hashtagElement = document.createElement('div');
+          hashtagElement.classList.add('bg-gradient-to-r', 'from-purple-600', 'to-pink-500', 'text-white', 'px-4', 'py-2', 'rounded-full', 'text-sm', 'hashtag-bubble');
+          hashtagElement.textContent = tag;
+          hashtagsContainer.appendChild(hashtagElement);
         });
+      } else {
+        hashtagsContainer.innerHTML = `<div class="text-gray-400 text-sm">No se encontraron hashtags recomendados.</div>`;
+      }
 
-        // Event Listeners
-        loginBtn.addEventListener('click', toggleLogin);
-        heroLoginBtn.addEventListener('click', toggleLogin);
-        logoutBtn.addEventListener('click', toggleLogin);
+      // Añadir un mensaje del chatbot con resumen de recomendaciones
+      if (data && data.recomendaciones && data.recomendaciones.resumen) {
+        addChatMessage(data.recomendaciones.resumen, true);
+      } else {
+        addChatMessage('Análisis completado. Consulta la transcripción y hashtags recomendados.', true);
+      }
+    }
+    
+    // Manejar el chat de IA
+    function handleChat() {
+      const chatInput = document.getElementById('chatInput');
+      const sendChatBtn = document.getElementById('sendChatBtn');
+      const chatContainer = document.getElementById('chatContainer');
+      
+      function scrollToBottom() {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
+      
+      // Enviar con botón
+      sendChatBtn.addEventListener('click', () => {
+        sendChatMessage();
+      });
+      
+      // Enviar con Enter
+      chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          sendChatMessage();
+        }
+      });
+      
+      function sendChatMessage() {
+        const message = chatInput.value.trim();
+        if (message) {
+          // Añadir mensaje del usuario
+          addChatMessage(message, false);
+          
+          // Limpiar input
+          chatInput.value = '';
+          
+          // Simular respuesta del AI
+          setTimeout(() => {
+            let response;
+            if (message.toLowerCase().includes('hashtag')) {
+              response = "Para hashtags efectivos, incluye entre 3-5 etiquetas relevantes que describan tu contenido. Puedo recomendarte algunas específicas para tu video.";
+            } else if (message.toLowerCase().includes('viral')) {
+              response = "Para mejorar la viralidad, asegúrate de incluir un hook interesante en los primeros 3 segundos y un buen storytelling. ¡Analicemos tu video para darte consejos personalizados!";
+            } else if (message.toLowerCase().includes('consejo') || message.toLowerCase().includes('sugerencia')) {
+              response = "Basado en tu contenido, te recomendaría comenzar con una pregunta impactante, mantener el ritmo dinámico y añadir subtítulos para mayor accesibilidad.";
+            } else {
+              response = "Gracias por tu mensaje. Como especialista en ViralBoostAI, estoy aquí para ayudarte a optimizar tu contenido. ¿Te gustaría que analice algún aspecto específico de tu video?";
+            }
+            
+            addChatMessage(response, true);
+          }, 1000);
+        }
+      }
+      
+      function addChatMessage(text, isAI) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('flex');
         
-        uploadContainer.addEventListener('click', () => videoUpload.click());
-        videoUpload.addEventListener('change', handleVideoUpload);
-        analyzeBtn.addEventListener('click', analyzeVideo);
-        newAnalysisBtn.addEventListener('click', resetAnalysis);
+        if (isAI) {
+          messageElement.innerHTML = `
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center mr-3 flex-shrink-0">
+              <i class="fas fa-robot text-xs text-white"></i>
+            </div>
+            <div class="chat-message-ai px-4 py-3 max-w-[85%]">
+              <p class="text-sm">${text}</p>
+            </div>
+          `;
+        } else {
+          messageElement.innerHTML = `
+            <div class="ml-auto"></div>
+            <div class="chat-message-user px-4 py-3 max-w-[85%]">
+              <p class="text-sm">${text}</p>
+            </div>
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center ml-3 flex-shrink-0">
+              <i class="fas fa-user text-xs"></i>
+            </div>
+          `;
+        }
         
-        sendChatBtn.addEventListener('click', sendChatMessage);
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendChatMessage();
+        chatContainer.appendChild(messageElement);
+        scrollToBottom();
+      }
+    }
+    
+    // Efecto 3D para tarjeta
+    function initCard3DEffect() {
+      const card = document.querySelector('.card-3d');
+      
+      if (card) {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          
+          const rotateY = (x - centerX) / 20;
+          const rotateX = (centerY - y) / 20;
+          
+          card.style.transform = `perspective(1000px) rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
         });
-
-        // Functions
-        function toggleLogin() {
-            simulatedUser.loggedIn = !simulatedUser.loggedIn;
-            
-            if (simulatedUser.loggedIn) {
-                // Simulate successful login
-                loginBtn.classList.add('hidden');
-                userProfile.classList.remove('hidden');
-                username.textContent = simulatedUser.username;
-                userAvatar.src = simulatedUser.avatar;
-                
-                // Update hero button
-                heroLoginBtn.innerHTML = '<i class="fas fa-chart-line mr-2"></i> Ver mis métricas';
-                heroLoginBtn.classList.remove('bg-pink-600', 'hover:bg-pink-700');
-                heroLoginBtn.classList.add('bg-purple-600', 'hover:bg-purple-700');
-                heroLoginBtn.classList.remove('pulse-animation');
-            } else {
-                // Simulate logout
-                loginBtn.classList.remove('hidden');
-                userProfile.classList.add('hidden');
-                
-                // Reset hero button
-                heroLoginBtn.innerHTML = '<i class="fab fa-tiktok text-xl"></i><span class="font-medium">Iniciar sesión con TikTok</span>';
-                heroLoginBtn.classList.add('bg-pink-600', 'hover:bg-pink-700');
-                heroLoginBtn.classList.remove('bg-purple-600', 'hover:bg-purple-700');
-                heroLoginBtn.classList.add('pulse-animation');
-            }
-        }
-
-        function handleVideoUpload(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const videoURL = URL.createObjectURL(file);
-                previewPlayer.src = videoURL;
-                uploadContainer.classList.add('hidden');
-                videoPreview.classList.remove('hidden');
-            }
-        }
-
-        function analyzeVideo() {
-            // Show loading state
-            analyzeBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Analizando...';
-            analyzeBtn.disabled = true;
-            
-            // Simulate API call with timeout
-            setTimeout(() => {
-                // Show results
-                resultsSection.style.display = 'block';
-                
-                // Scroll to results
-                resultsSection.scrollIntoView({ behavior: 'smooth' });
-                
-                // Generate random hashtags (5-8)
-                hashtagsContainer.innerHTML = '';
-                const shuffledHashtags = [...hashtags].sort(() => 0.5 - Math.random());
-                const selectedHashtags = shuffledHashtags.slice(0, Math.floor(Math.random() * 4) + 5);
-                
-                selectedHashtags.forEach(tag => {
-                    const span = document.createElement('span');
-                    span.className = 'bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded-full text-sm cursor-pointer transition-colors';
-                    span.textContent = tag;
-                    hashtagsContainer.appendChild(span);
-                });
-                
-                // Generate random optimal time
-                const days = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
-                const randomDay = days[Math.floor(Math.random() * days.length)];
-                const randomHour = Math.floor(Math.random() * 6) + 15; // Between 15-20 (3-8pm)
-                optimalTime.textContent = `${randomDay} a las ${randomHour}:00`;
-                
-                // Select random audio trend
-                const randomAudio = audioTrends[Math.floor(Math.random() * audioTrends.length)];
-                audioTrend.textContent = randomAudio.name;
-                
-                // Reset analyze button
-                analyzeBtn.innerHTML = 'Analizar Video con IA';
-                analyzeBtn.disabled = false;
-            }, 2000);
-        }
-
-        function resetAnalysis() {
-            resultsSection.style.display = 'none';
-            videoPreview.classList.add('hidden');
-            uploadContainer.classList.remove('hidden');
-            previewPlayer.src = '';
-            videoUpload.value = '';
-        }
-
-        function sendChatMessage() {
-            const message = chatInput.value.trim().toLowerCase();
-            if (message === '') return;
-            
-            // Add user message to chat
-            addChatMessage(message, 'user');
-            chatInput.value = '';
-            
-            // Get AI response
-            let response = chatResponses.default;
-            for (const key in chatResponses) {
-                if (message.includes(key)) {
-                    response = chatResponses[key];
-                    break;
-                }
-            }
-            
-            // Simulate typing delay
-            setTimeout(() => {
-                addChatMessage(response, 'ai');
-            }, 500);
-        }
-
-        function addChatMessage(message, sender) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = sender === 'ai' ? 'chat-message-ai' : 'chat-message-user';
-            messageDiv.className += ' p-3 text-white max-w-xs';
-            
-            if (sender === 'ai') {
-                messageDiv.innerHTML = message;
-            } else {
-                messageDiv.textContent = message;
-            }
-            
-            chatContainer.appendChild(messageDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
-        // Initialize with some hashtags in case user goes straight to results
-        function initializeHashtags() {
-            const initialHashtags = ["#fyp", "#viral", "#parati", "#humor", "#baile", "#tendencia"];
-            initialHashtags.forEach(tag => {
-                const span = document.createElement('span');
-                span.className = 'bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded-full text-sm cursor-pointer transition-colors';
-                span.textContent = tag;
-                hashtagsContainer.appendChild(span);
-            });
-        }
-
-        initializeHashtags();
-    </script>
-<p style="border-radius: 8px; text-align: center; font-size: 12px; color: #fff; margin-top: 16px;position: fixed; left: 8px; bottom: 8px; z-index: 10; background: rgba(0, 0, 0, 0.8); padding: 4px 8px;">Made with <img src="https://enzostvs-deepsite.hf.space/logo.svg" alt="DeepSite Logo" style="width: 16px; height: 16px; vertical-align: middle;display:inline-block;margin-right:3px;filter:brightness(0) invert(1);"><a href="https://enzostvs-deepsite.hf.space" style="color: #fff;text-decoration: underline;" target="_blank" >DeepSite</a> - 🧬 <a href="https://enzostvs-deepsite.hf.space?remix=TeoFilaX/viraltikai" style="color: #fff;text-decoration: underline;" target="_blank" >Remix</a></p></body>
+        
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg)';
+        });
+      }
+    }
+    
+    // Inicializar cuando el documento esté cargado
+    document.addEventListener('DOMContentLoaded', function() {
+      createParticles();
+      const metricsChart = initChart();
+      handleUpload();
+      handleAnalyze();
+      handleChat();
+      initCard3DEffect();
+      
+      // Animación de escritura para el chatbot (demo)
+      const firstMessage = document.querySelector('.chat-message-ai p');
+      if (firstMessage) {
+        firstMessage.classList.add('typewriter');
+      }
+      
+      // Actualización en tiempo real del gráfico (simulada)
+      if (metricsChart) {
+        setInterval(() => {
+          if (!document.getElementById('analyzeBtn').disabled) {
+            const randomData = metricsChart.data.datasets[0].data.map(() => 
+              Math.floor(Math.random() * 30) + 70
+            );
+            metricsChart.data.datasets[0].data = randomData;
+            metricsChart.update();
+          }
+        }, 5000);
+      }
+    });
+  </script>
+</body>
 </html>
