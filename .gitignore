@@ -78,3 +78,14 @@ venv.bak/
 # macOS files
 .DS_Store
 backend/app/models/Mistral-7B-v0.1/
+# entornos virtuales
+venv/
+.venv/
+
+# pesos de modelos grandes (los subirás luego con Git LFS)
+backend/app/models/Mistral-7B-v0.1/
+
+# ficheros temporales de macOS y editor
+.DS_Store
+.idea/
+.vscode/
