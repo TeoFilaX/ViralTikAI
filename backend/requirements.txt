@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+python-dotenv
+ffmpeg-python
+openai
+ctransformers
+whisper
+

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidad - ViralBoostAI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#ec4899',  // rosa para elementos principales
+                        secondary: '#8b5cf6', // morado para secundarios
+                        background: '#0f172a', // azul oscuro de fondo
+                        surface: '#1e293b',   // azul grisáceo para superficies
+                        text: '#f8fafc'       // blanco suave para texto
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Arial", sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        
+        .nav-shadow {
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .content-card {
+            background: linear-gradient(145deg, #1e293b, #1d2535);
+            border-radius: 1.25rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(124, 58, 237, 0.4), transparent);
+        }
+        
+        .back-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .back-hover:hover {
+            transform: translateX(-5px);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        #hero-pattern {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 65%;
+            background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.15), transparent 70%);
+            z-index: -1;
+        }
+        
+        @media (max-width: 768px) {
+            #hero-pattern {
+                height: 50%;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen relative pb-16 overflow-x-hidden">
+    <!-- Fondo decorativo -->
+    <div id="hero-pattern"></div>
+    
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Barra de navegación -->
+        <nav class="flex justify-between items-center py-4 mb-8">
+            <a href="./index.html" class="text-primary font-bold text-xl flex items-center">
+                <i class="fas fa-rocket mr-2"></i>
+                ViralBoostAI
+            </a>
+            <a href="./index.html" class="bg-primary hover:bg-pink-500 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors">
+                Ir a la plataforma
+            </a>
+        </nav>
+        
+        <div class="flex flex-col lg:flex-row gap-8 relative">
+            <!-- Barra lateral para navegación (solo en desktop) -->
+            <div class="hidden lg:block lg:w-1/4 sticky top-8 self-start">
+                <div class="content-card p-6 nav-shadow h-fit">
+                    <h2 class="text-lg font-bold text-secondary mb-4">Índice</h2>
+                    <ul class="space-y-2">
+                        <li><a href="#informacion" class="text-slate-300 hover:text-primary transition-colors flex items-center"><i class="fas fa-database text-xs mr-2"></i> Información Recopilada</a></li>
+                        <li><a href="#finalidad" class="text-slate-300 hover:text-primary transition-colors flex items-center"><i class="fas fa-bullseye text-xs mr-2"></i> Finalidad del Servicio</a></li>
+                        <li><a href="#cookies" class="text-slate-300 hover:text-primary transition-colors flex items-center"><i class="fas fa-cookie text-xs mr-2"></i> Cookies</a></li>
+                        <li><a href="#comparticion" class="text-slate-300 hover:text-primary transition-colors flex items-center"><i class="fas fa-share-alt text-xs mr-2"></i> Compartición de Información</a></li>
+                        <li><a href="#seguridad" class="text-slate-300 hover:text-primary transition-colors flex items-center"><i class="fas fa-shield-alt text-xs mr-2"></i> Seguridad</a></li>
+                        <li><a href="#cambios" class="text-slate-300 hover:text-primary transition-colors flex items-center"><i class="fas fa-exchange-alt text-xs mr-2"></i> Cambios en la Política</a></li>
+                        <li><a href="#contacto" class="text-slate-300 hover:text-primary transition-colors flex items-center"><i class="fas fa-envelope text-xs mr-2"></i> Contacto</a></li>
+                    </ul>
+                    
+                    <div class="mt-6 pt-4 border-t border-slate-700">
+                        <a href="./index.html" class="flex items-center text-primary font-medium back-hover">
+                            <i class="fas fa-arrow-left mr-2"></i>
+                            Volver al inicio
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contenido principal -->
+            <div class="lg:w-3/4">
+                <div class="content-card p-8 nav-shadow fade-in">
+                    <!-- Encabezado -->
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8">
+                        <div>
+                            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                                Política de Privacidad
+                            </h1>
+                            <p class="mt-2 text-slate-400">Nuestra promesa de proteger y respetar tu privacidad</p>
+                        </div>
+                        <div class="mt-4 md:mt-0 bg-slate-800/40 rounded-full px-4 py-2 text-slate-300 text-sm flex items-center">
+                            <i class="fas fa-calendar-alt mr-2 text-primary"></i>
+                            <span>Fecha de entrada en vigor: <span class="font-bold">30 de mayo de 2025</span></span>
+                        </div>
+                    </div>
+                    
+                    <div class="section-divider my-8"></div>
+                    
+                    <div class="prose prose-invert max-w-none">
+                        <p class="text-lg leading-relaxed">
+                            En <span class="text-primary font-bold">ViralBoostAI</span>, valoramos y respetamos profundamente tu privacidad. Nuestro compromiso es brindarte una experiencia segura y transparente. Esta política explica cómo manejamos la información dentro de nuestra plataforma de inteligencia artificial para optimización de videos.
+                        </p>
+                        
+                        <!-- Secciones de la política -->
+                        <div class="space-y-8 mt-12">
+                            <!-- Sección 1 -->
+                            <div id="informacion" class="py-2">
+                                <div class="flex items-start">
+                                    <div class="mr-4 mt-1">
+                                        <div class="bg-primary/20 w-12 h-12 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-database text-primary text-lg"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-2xl font-bold flex items-center">
+                                            Información Recopilada
+                                            <span class="ml-auto bg-slate-800 px-3 py-1 rounded-full text-xs font-normal">Fundamental</span>
+                                        </h2>
+                                        <p class="mt-4 text-slate-300">
+                                            <span class="inline-block mr-2">✅</span>
+                                            ViralBoostAI <span class="text-primary font-bold">NO</span> recopila, almacena ni comparte datos personales de los usuarios.
+                                        </p>
+                                        <p class="mt-4 text-slate-300">
+                                            <span class="inline-block mr-2">✅</span>
+                                            Los videos que subes para análisis no salen de tu dispositivo. Todo el procesamiento ocurre localmente sin transferencia externa.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="section-divider my-6"></div>
+                            
+                            <!-- Sección 2 -->
+                            <div id="finalidad" class="py-2">
+                                <div class="flex items-start">
+                                    <div class="mr-4 mt-1">
+                                        <div class="bg-primary/20 w-12 h-12 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-bullseye text-primary text-lg"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-2xl font-bold">Finalidad del Servicio</h2>
+                                        <p class="mt-4 text-slate-300">
+                                            La única misión de nuestro análisis es proporcionarte recomendaciones prácticas para mejorar tus videos virales. Utilizamos tecnología avanzada pero ética:
+                                        </p>
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                                            <div class="bg-slate-800/50 p-4 rounded-xl">
+                                                <div class="bg-primary/20 w-10 h-10 rounded-full flex items-center justify-center mb-3">
+                                                    <i class="fas fa-video text-primary"></i>
+                                                </div>
+                                                <h3 class="font-bold">Sin uso comercial</h3>
+                                                <p class="text-sm text-slate-400 mt-1">No vendemos ni usamos tus contenidos para otros fines</p>
+                                            </div>
+                                            <div class="bg-slate-800/50 p-4 rounded-xl">
+                                                <div class="bg-primary/20 w-10 h-10 rounded-full flex items-center justify-center mb-3">
+                                                    <i class="fas fa-user-clock text-primary"></i>
+                                                </div>
+                                                <h3 class="font-bold">Sin retención</h3>
+                                                <p class="text-sm text-slate-400 mt-1">Tu contenido se procesa temporalmente y luego se descarta</p>
+                                            </div>
+                                            <div class="bg-slate-800/50 p-4 rounded-xl">
+                                                <div class="bg-primary/20 w-10 h-10 rounded-full flex items-center justify-center mb-3">
+                                                    <i class="fas fa-robot text-primary"></i>
+                                                </div>
+                                                <h3 class="font-bold">Análisis ético</h3>
+                                                <p class="text-sm text-slate-400 mt-1">Nuestra IA opera bajo estrictos principios de privacidad</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="section-divider my-6"></div>
+                            
+                            <!-- Sección 3 -->
+                            <div id="cookies" class="py-2">
+                                <div class="flex items-start">
+                                    <div class="mr-4 mt-1">
+                                        <div class="bg-primary/20 w-12 h-12 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-cookie text-primary text-lg"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-2xl font-bold">Cookies y Tecnología de Rastreo</h2>
+                                        <div class="mt-4 flex items-start">
+                                            <div class="bg-slate-800/50 rounded-lg p-4 flex-1">
+                                                <div class="flex items-center">
+                                                    <div class="bg-red-500/20 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                                                        <i class="fas fa-ban text-red-400"></i>
+                                                    </div>
+                                                    <h3 class="font-bold text-slate-200">Política estricta sin cookies</h3>
+                                                </div>
+                                                <p class="mt-3 text-slate-400 text-sm">
+                                                    Nuestra plataforma se ha diseñado deliberadamente sin tecnología de rastreo. No utilizamos cookies, balizas web ni ningún mecanismo de seguimiento digital.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="section-divider my-6"></div>
+                            
+                            <!-- Sección 4 -->
+                            <div id="comparticion" class="py-2">
+                                <div class="flex items-start">
+                                    <div class="mr-4 mt-1">
+                                        <div class="bg-primary/20 w-12 h-12 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-share-alt text-primary text-lg"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-2xl font-bold">Compartición de Información</h2>
+                                        <div class="mt-4 bg-slate-800/50 rounded-xl p-5">
+                                            <div class="flex items-center mb-3">
+                                                <i class="fas fa-lock text-primary mr-3 text-lg"></i>
+                                                <h3 class="font-bold text-slate-200">No compartimos tus datos</h3>
+                                            </div>
+                                            <p class="text-slate-300 text-sm">
+                                                Mantenemos un modelo de privacidad integral donde no compartimos ninguna información con terceros. Todo el procesamiento se realiza localmente o se elimina inmediatamente después de generar los resultados.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="section-divider my-6"></div>
+                            
+                            <!-- Sección 5 -->
+                            <div id="seguridad" class="py-2">
+                                <div class="flex items-start">
+                                    <div class="mr-4 mt-1">
+                                        <div class="bg-primary/20 w-12 h-12 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-shield-alt text-primary text-lg"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-2xl font-bold">Seguridad de Datos</h2>
+                                        <div class="mt-4 bg-gradient-to-r from-slate-800 to-slate-800/60 rounded-xl p-5 border-l-4 border-primary">
+                                            <h3 class="font-bold text-primary">Privacidad por diseño</h3>
+                                            <p class="mt-2 text-slate-300">
+                                                Hemos desarrollado ViralBoostAI con un enfoque de "sin datos sensibles". El sistema está configurado para evitar automáticamente el almacenamiento de información personal. No mantenemos:
+                                            </p>
+                                            <ul class="mt-3 space-y-2">
+                                                <li class="flex items-start"><i class="fas fa-times text-red-400 mt-1 mr-2"></i> <span>Historial de videos analizados</span></li>
+                                                <li class="flex items-start"><i class="fas fa-times text-red-400 mt-1 mr-2"></i> <span>Perfiles de usuario</span></li>
+                                                <li class="flex items-start"><i class="fas fa-times text-red-400 mt-1 mr-2"></i> <span>Registros permanentes de sesiones</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="section-divider my-6"></div>
+                            
+                            <!-- Sección 6 -->
+                            <div id="cambios" class="py-2">
+                                <div class="flex items-start">
+                                    <div class="mr-4 mt-1">
+                                        <div class="bg-primary/20 w-12 h-12 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-exchange-alt text-primary text-lg"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-2xl font-bold">Cambios en la Política</h2>
+                                        <p class="mt-4 text-slate-300">
+                                            Nos reservamos el derecho de realizar modificaciones para reflejar actualizaciones legales o mejoras en el servicio. Te recomendamos:
+                                        </p>
+                                        <div class="flex items-center mt-4 text-sm">
+                                            <div class="flex-shrink-0 bg-secondary/20 w-10 h-10 rounded-full flex items-center justify-center">
+                                                <i class="fas fa-bell text-secondary"></i>
+                                            </div>
+                                            <p class="ml-3 text-slate-300">
+                                                <span class="font-bold">Revisa periódicamente</span> esta página para mantenerte informado sobre nuestra política de privacidad.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="section-divider my-6"></div>
+                            
+                            <!-- Sección 7 -->
+                            <div id="contacto" class="py-2">
+                                <div class="flex items-start">
+                                    <div class="mr-4 mt-1">
+                                        <div class="bg-primary/20 w-12 h-12 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-envelope text-primary text-lg"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-2xl font-bold">Contacto</h2>
+                                        <p class="mt-4 text-slate-300">
+                                            ¿Tienes preguntas o inquietudes sobre cómo protegemos tu privacidad? Estamos aquí para ayudarte.
+                                        </p>
+                                        <a href="mailto:contacto@viralboostai.com" class="mt-4 inline-flex items-center px-5 py-3 bg-gradient-to-r from-primary to-secondary rounded-full font-medium hover:opacity-90 transition-opacity">
+                                            <i class="fas fa-paper-plane mr-2"></i> contacto@viralboostai.com
+                                        </a>
+                                        
+                                        <div class="mt-6 bg-primary/10 rounded-xl p-5">
+                                            <div class="flex items-center">
+                                                <div class="bg-white text-primary p-3 rounded-lg mr-3">
+                                                    <i class="fas fa-headset text-xl"></i>
+                                                </div>
+                                                <div>
+                                                    <h3 class="font-bold text-primary">Equipo de soporte</h3>
+                                                    <p class="mt-1 text-slate-300 text-sm">
+                                                        Nuestro equipo especializado responderá a tus consultas en menos de 24 horas.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Botón de volver (mobile) -->
+                    <div class="lg:hidden mt-10">
+                        <a href="./index.html" class="inline-flex items-center px-5 py-3 bg-primary/10 text-primary rounded-full font-medium hover:bg-primary/20 transition-colors">
+                            <i class="fas fa-arrow-left mr-2"></i> Volver al inicio
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="mt-16 py-6 text-center border-t border-slate-800">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="#" class="text-slate-400 hover:text-primary transition-colors">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="text-slate-400 hover:text-primary transition-colors">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="#" class="text-slate-400 hover:text-primary transition-colors">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="text-slate-400 hover:text-primary transition-colors">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+            <p class="text-sm text-slate-500">© 2025 ViralBoostAI. Todos los derechos reservados.</p>
+            <p class="text-xs text-slate-600 mt-2">Creado con ❤️ para proteger tu privacidad</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Añadir interacción a los enlaces del índice
+            const navLinks = document.querySelectorAll('a[href^="#"]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Efecto fadeIn para los elementos del contenido
+            const contentElements = document.querySelectorAll('.prose > div');
+            let delay = 0;
+            contentElements.forEach(el => {
+                setTimeout(() => {
+                    el.style.opacity = 0;
+                    el.style.transform = 'translateY(10px)';
+                    el.classList.add('fade-in');
+                    setTimeout(() => {
+                        el.style.opacity = '';
+                        el.style.transform = '';
+                    }, 100);
+                }, delay);
+                delay += 50;
+            });
+        });
+    </script>
+</body>
+</html>
