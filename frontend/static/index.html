@@ -927,7 +927,7 @@
           const formData = new FormData();
           formData.append('file', fileInput.files[0]);
 
-          const response = await fetch('/api/analizar', {
+          const response = await fetch('/analizar/', {
             method: 'POST',
             body: formData
           });
